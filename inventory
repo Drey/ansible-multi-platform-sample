@@ -1,0 +1,26 @@
+csr1000v-1 ansible_host=10.62.22.79 ansible_port=10003
+vmx-1 ansible_host=10.62.22.79 ansible_port=10004
+
+[csr]
+csr1000v-1
+
+[csr:vars]
+ansible_network_os=ios
+ansible_connection=network_cli
+
+[vmx]
+vmx-1
+
+[vmx:vars]
+ansible_network_os=junos
+ansible_connection=netconf
+
+[tunnel_endpoint:children]
+csr
+vmx
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/env python
+deprecation_warnings=False
+ansible_user=ciscolab
+ansible_password=C1sco123

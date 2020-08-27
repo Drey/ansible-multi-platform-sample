@@ -1,0 +1,31 @@
+---
+- name: IOS Configure GRE tunnels
+  cisco.ios.ios_config:
+    lines: "{{ lookup('template', 'ios_gre.j2') }}"
+  loop: "{{ tunnels }}"
+  loop_control:
+    label: "Tunnel{{ item.index }}"
+  when: item.state == 'present' and item['endpoints'][inventory_hostname] is defined
+
+- name: IOS Change GRE tunnel administrative status
+  cisco.ios.ios_interface:
+    name: "Tunnel{{ item.index }}"
+    enabled: "{{ item.enabled }}"
+  loop: "{{ tunnels }}"
+  loop_control:
+    label: "Tunnel{{ item.index }}"
+  when: item.state == 'present' and item['endpoints'][inventory_hostname] is defined
+
+- name: IOS Delete GRE tunnels
+  cisco.ios.ios_interface:
+    name: "Tunnel{{ item.index }}"
+    state: absent
+  loop: "{{ tunnels }}"
+  loop_control:
+    label: "Tunnel{{ item.index }}"
+  when: item.state == 'absent' and item['endpoints'][inventory_hostname] is defined
+
+- name: IOS Save running-config
+  cisco.ios.ios_config:
+    save_when: always
+  changed_when: false

@@ -1,0 +1,16 @@
+{% for tunnel in tunnels %}
+{% if tunnel.state == 'present' %}
+set interfaces gr-0/0/0 unit {{ tunnel.index }} description "-= {{ tunnel['endpoints'][inventory_hostname].description }} =-"
+set interfaces gr-0/0/0 unit {{ tunnel.index }} tunnel source {{ tunnel['endpoints'][inventory_hostname].source_ip }}
+set interfaces gr-0/0/0 unit {{ tunnel.index }} tunnel destination {{ tunnel['endpoints'][inventory_hostname].destination_ip }}
+set interfaces gr-0/0/0 unit {{ tunnel.index }} tunnel key {{ tunnel.index }}
+set interfaces gr-0/0/0 unit {{ tunnel.index }} family inet address {{ tunnel['endpoints'][inventory_hostname].ipv4_addr }}
+{% if tunnel.enabled %}
+delete interfaces gr-0/0/0 unit {{ tunnel.index }} disable
+{% elif not tunnel.enabled %}
+set interfaces gr-0/0/0 unit {{ tunnel.index }} disable
+{% endif %}
+{% elif tunnel.state == 'absent' %}
+delete interfaces gr-0/0/0 unit {{ tunnel.index }}
+{% endif %}
+{% endfor %}

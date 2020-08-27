@@ -1,0 +1,8 @@
+---
+- name: JunOS Configure GRE tunnels
+  junipernetworks.junos.junos_config:
+    lines: "{{ lookup('template', 'junos_gre.j2') }}"
+  loop: "{{ tunnels }}"
+  loop_control:
+    label: "gr-0/0/0.{{ item.index }}"
+  when: item['endpoints'][inventory_hostname] is defined

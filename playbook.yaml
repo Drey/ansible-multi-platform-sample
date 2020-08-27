@@ -1,0 +1,8 @@
+---
+- name: Configuring tunnel-services
+  hosts:
+    - tunnel_endpoint
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - tunnel-endpoint

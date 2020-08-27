@@ -1,0 +1,8 @@
+{% for tunnel in tunnels %}
+interface Tunnel{{ tunnel.index }}
+ description -= {{ tunnel['endpoints'][inventory_hostname].description }} =-
+ ip address {{ tunnel['endpoints'][inventory_hostname].ipv4_addr }} 255.255.255.252
+ tunnel source {{ tunnel['endpoints'][inventory_hostname].source_ip }}
+ tunnel destination {{ tunnel['endpoints'][inventory_hostname].destination_ip }}
+ tunnel key {{ tunnel.index }}
+{% endfor %}

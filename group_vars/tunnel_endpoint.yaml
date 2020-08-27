@@ -1,0 +1,16 @@
+---
+tunnels:
+  - index: 10
+    state: present
+    enabled: True
+    endpoints:
+      csr1000v-1:
+        source_ip: 10.0.0.1
+        destination_ip: 10.0.0.2
+        ipv4_addr: 10.10.10.1
+        description: vMX-1 p2p gre
+      vmx-1:
+        source_ip: 10.0.0.2
+        destination_ip: 10.0.0.1
+        ipv4_addr: 10.10.10.2/30
+        description: CSR1000v-1 p2p gre

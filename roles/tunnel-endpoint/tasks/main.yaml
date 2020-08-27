@@ -1,0 +1,6 @@
+---
+- import_tasks: ios.yaml
+  when: ansible_network_os == 'ios'
+
+- import_tasks: junos.yaml
+  when: ansible_network_os == 'junos'
